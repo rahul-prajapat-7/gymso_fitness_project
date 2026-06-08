@@ -27,7 +27,7 @@ jobs:
        run: | 
           docker push ${{ secrets.DOCKER_USERNAME }}/static-site:latest
 
-          
+
 
 
   deploy:
