@@ -62,4 +62,3 @@ jobs:
 
               docker run -d -p 80:80 --name static-website ${{ secrets.DOCKER_USERNAME }}/static-site:latest
 
-
