@@ -41,35 +41,36 @@ jobs:
 
 
 
+
   deploy:
-  runs-on: ubuntu-latest
-  needs: build
+    runs-on: ubuntu-latest
+    needs: build
 
-  steps:
+    steps:
 
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Deploy to EC2 server
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
+      - name: Deploy to EC2 server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
 
         # 🔥 IMPORTANT: Direct private key usage
-        key: ${{ secrets.EC2_SSH_KEY }}
+          key: ${{ secrets.EC2_SSH_KEY }}
 
         # Optional but recommended (avoids host verification issues)
-        script_stop: true
+          script_stop: true
 
-        script: |
-          echo "Starting Deployment..."
+          script: |
+            echo "Starting Deployment..."
 
-          docker pull ${{ secrets.DOCKER_USERNAME }}/static-site:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/static-site:latest
 
-          docker stop static-website || true
-          docker rm static-website || true
-          docker run -d -p 80:80 --name static-website \
-            ${{ secrets.DOCKER_USERNAME }}/static-site:latest
+            docker stop static-website || true
+            docker rm static-website || true
+            docker run -d -p 80:80 --name static-website \
+              ${{ secrets.DOCKER_USERNAME }}/static-site:latest
 
-          echo " Deployment Successful"
+            echo " Deployment Successful"
